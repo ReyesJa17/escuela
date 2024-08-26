@@ -22,9 +22,7 @@ from langchain.prompts import PromptTemplate
 
 ### Set the API keys
 os.environ['GROQ_API_KEY'] 
-os.environ['LANGCHAIN_API_KEY'] 
-os.environ["LANGCHAIN_TRACING_V2"] 
-os.environ["LANGCHAIN_PROJECT"] 
+
 
 
 
