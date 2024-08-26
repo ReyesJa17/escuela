@@ -1,16 +1,15 @@
 
 
-from langchain_community.embeddings import LlamaCppEmbeddings
+
 
 from langchain_community.vectorstores import Chroma
-from langchain_community.chat_models import ChatOllama
-from typing import Dict, List, Optional, Tuple
+
 from langchain import hub
 from langchain_core.runnables import RunnablePassthrough
 
-from langchain.prompts import ChatPromptTemplate
-from langchain_core.output_parsers import StrOutputParser
 
+from langchain_core.output_parsers import StrOutputParser
+from langchain_openai import OpenAIEmbeddings
 
 
 
@@ -19,12 +18,19 @@ import os
 from langchain_groq import ChatGroq
 
 RANDOM_SEED = 224  # Fixed seed for reproducibility
-
-
-embd_model_path = r'C://Users//Reyes//Documents//NomicEmbed//nomic-embed-text-v1.5-GGUF//nomic-embed-text-v1.5.Q6_K.gguf'
-# Embed and index
-embedding = LlamaCppEmbeddings(model_path=embd_model_path, n_batch=1024)
 os.environ['GROQ_API_KEY'] 
+os.environ["OPENAI_API_KEY"]
+
+
+# Embed and index
+embedding = OpenAIEmbeddings(
+    model="text-embedding-3-small",
+    # With the `text-embedding-3` class
+    # of models, you can specify the size
+    # of the embeddings you want returned.
+    # dimensions=1024
+)
+
 
 CHROMA_DIR = "feynman_storage"
 

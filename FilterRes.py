@@ -16,7 +16,7 @@ from typing import List
 import os
 from langgraph.checkpoint.sqlite import SqliteSaver
 from langchain.prompts import PromptTemplate
-from raptor_feynman import answer_raptor
+#from raptor_feynman import answer_raptor
 
 
 
@@ -121,6 +121,18 @@ prompt_translate_problem = PromptTemplate(
 )
 
 
+prompt_answer_question = PromptTemplate(
+    template=
+    """
+    You are a helpful teacher that is trying to help a student solve a physics problem. \n
+    Your job is to answer the question. \n
+    Return a JSON key "answer" with the answer. \n
+    Here is the question: \n
+    {question} \n
+    """,
+   inputs=["question"],
+)
+
 
 
 #Chains
@@ -132,6 +144,8 @@ chain_steps_to_solve = prompt_steps_to_solve | llm | JsonOutputParser()
 chain_solve_physics_problem = prompt_solve_physics_problem | llm | JsonOutputParser()
 
 chain_translate_problem = prompt_translate_problem | llm | StrOutputParser()
+
+chain_answer_question = prompt_answer_question | llm | JsonOutputParser()
 
 
 #Graph State
@@ -202,7 +216,9 @@ def retrieve(state):
     documents = ""
     for question in questions:
         print(question)
-        documents= documents + answer_raptor(question)
+        answer = chain_answer_question.invoke({"question": question})
+        answer = str(answer["answer"])
+        documents= documents + answer
         print(documents)
     # Retrieval
 
@@ -324,4 +340,4 @@ def run_workflow_filter(inputs):
     return value["translate"]
 
 
-#run_workflow_filter({"problem": "A car travels 30 km at a speed of 60 km/h and then 30 km at a speed of 20 km/h. What is the average speed of the car during this journey?"})
+run_workflow_filter({"problem": "A car travels 30 km at a speed of 60 km/h and then 30 km at a speed of 20 km/h. What is the average speed of the car during this journey?"})
