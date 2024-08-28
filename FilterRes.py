@@ -32,7 +32,7 @@ os.environ['GROQ_API_KEY']
 
 
 llm = ChatGroq(
-            model="llama-3.1-70b-versatile",
+            model="llama-3.1-8b-instant",
             temperature=0,
         )
 
@@ -96,7 +96,7 @@ prompt_explain_problem = PromptTemplate(
     Your job is to modify the answer to make it easier to understand. \n
     The answer is for 3rd grade students. \n
     Always answer in spanish. \n
-    Always return a physics related answer. \n
+    Dont use more than a 100 words. \n
     Here is the original question: \n
     {question} \n
     Here is the answer to transform: \n
@@ -325,4 +325,4 @@ def run_workflow_filter(inputs):
     return value["translate"]
 
 
-#run_workflow_filter({"problem": "Un automóvil recorre 30 km a una velocidad de 60 km/h y luego 30 km a una velocidad de 20 km/h. ¿Cuál es la velocidad promedio del automóvil durante este viaje?"})
+run_workflow_filter({"problem": "Porque vemos colores?"})
