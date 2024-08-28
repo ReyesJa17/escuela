@@ -1,5 +1,29 @@
+
 import streamlit as st
 from main import get_response
+
+
+
+
+from PIL import Image
+
+
+
+st.set_page_config(layout="wide")
+# You can always call this function where ever you want
+
+def add_logo(logo_path, width, height):
+    """Read and return a resized logo"""
+    logo = Image.open(logo_path)
+    modified_logo = logo.resize((width, height))
+    return modified_logo
+
+my_logo = add_logo(logo_path="logo.png", width=170, height=170)
+
+
+
+
+st.image(my_logo)
 
 
 
@@ -54,17 +78,17 @@ def on_chat_submit(chat_input):
 
 
 # Set page title
-st.title('Feynmman')
+st.title('FEYNMAN GRAPH 1.0')
 
 
-st.header('Conversation', divider='rainbow')
+st.header('Primer chatbot especializado en mentorias de fisica para tempranas edades', divider='blue')
 
 
 
 
         
 
-message = st.chat_input("Say something")
+message = st.chat_input("Escribe tu mensaje aquí...")
 if "history" not in st.session_state:
         st.session_state.history = []
 if 'conversation_history' not in st.session_state:

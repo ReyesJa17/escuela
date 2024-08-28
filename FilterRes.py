@@ -48,8 +48,8 @@ prompt_steps_to_solve = PromptTemplate(
     You are a helpful teacher that is trying to help a student solve a physics problem. \n
     Your job is to give the student the steps to solve the problem. \n
     Leave any extras that might help the user understand the problem like examples or applications. \n
-    Return a JSON key "steps" with the steps to solve the problem. \n
-    Here are the problem: \n
+    Return the steps to solve the problem. \n
+    Here is the problem: \n
     {problem} \n
     """,
    inputs=["problem"],
@@ -73,23 +73,6 @@ prompt_multi_question = PromptTemplate(
 )
 
 
-prompt_vector = PromptTemplate(
-    template=
-    """
-    You are a helpful teacher that is trying to help a student solve a physics problem. \n
-    Your job is to analyze all the information provided and return a final answer. \n
-    All details are important in order for the student to understand the problem. \n
-    Leave all information needed to responde the steps to solve the problem. \n
-    Return a JSON key "final_answer" with the final answer. \n
-    Here is the problem: \n
-    {problem} \n
-    Here is the steps to solve the problem: \n
-    {steps_to_solve} \n
-    Here is the vector data base information: \n
-    {vector_data_base_answer} \n
-    """,
-   inputs=["problem" ,"steps_to_solve", "vector_data_base_answer"],
-)
 
 
 prompt_solve_physics_problem = PromptTemplate(
@@ -97,22 +80,22 @@ prompt_solve_physics_problem = PromptTemplate(
     """
     You are a helpful teacher that is trying to help a student to understand a physics problem. \n
     Your task is to use the information provided and format it in a way that the student can understand. \n
-    Return a JSON key "explanation" with the explanation. \n
+    Just return the explanation. \n
     Here is the problem: \n
     {problem} \n
     Vector data base information: {vector_data_base_answer} \n
     Steps to solve the problem: {steps_to_solve} \n
     """,
-   inputs=["problem" ,  "vector_data_base_answer"],
+   inputs=["problem" ,  "vector_data_base_answer", "steps_to_solve"],
 )
 
-prompt_translate_problem = PromptTemplate(
+prompt_explain_problem = PromptTemplate(
     template=
     """
-    You are a helpful translator\n
-    Your job is to translate the answer from english to spanish\n
-    If the answer is already in spanish, return the same answer without any changes or extra words\n
-    Here is the answer to translate: \n
+    You are a helpful elementary school teacher that is trying to help a student solve a physics problem. \n
+    Your job is to modify the answer to make it easier to understand. \n
+    The answer is for 3rd grade students. \n
+    Here is the answer to transform: \n
     {final_answer} \n
     """,
    inputs=["final_answer" ],
@@ -124,7 +107,7 @@ prompt_answer_question = PromptTemplate(
     """
     You are a helpful teacher that is trying to help a student solve a physics problem. \n
     Your job is to answer the question. \n
-    Return a JSON key "answer" with the answer. \n
+    Just return the answer. \n
     Here is the question: \n
     {question} \n
     """,
@@ -137,13 +120,13 @@ prompt_answer_question = PromptTemplate(
 
 chain_multi_question = prompt_multi_question | llm | JsonOutputParser()
 
-chain_steps_to_solve = prompt_steps_to_solve | llm | JsonOutputParser()
+chain_steps_to_solve = prompt_steps_to_solve | llm | StrOutputParser()
 
-chain_solve_physics_problem = prompt_solve_physics_problem | llm | JsonOutputParser()
+chain_solve_physics_problem = prompt_solve_physics_problem | llm | StrOutputParser()
 
-chain_translate_problem = prompt_translate_problem | llm | StrOutputParser()
+chain_translate_problem = prompt_explain_problem | llm | StrOutputParser()
 
-chain_answer_question = prompt_answer_question | llm | JsonOutputParser()
+chain_answer_question = prompt_answer_question | llm | StrOutputParser()
 
 
 #Graph State
@@ -154,7 +137,7 @@ class GraphState(TypedDict):
 
     steps: str
     questions: List[str]
-    documents: List[str]
+    documents: str
     final_answer: str
     translate: str
 
@@ -196,7 +179,7 @@ def steps_to_solve(state):
 
     problem = state["problem"]
     steps = chain_steps_to_solve.invoke({"problem": problem})
-    return {"steps": steps["steps"]} 
+    return {"steps": steps} 
 
 
 def retrieve(state):
@@ -215,7 +198,7 @@ def retrieve(state):
     for question in questions:
         print(question)
         answer = chain_answer_question.invoke({"question": question})
-        answer = str(answer["answer"])
+        answer = str(answer)
         documents= documents + answer
         print(documents)
     # Retrieval
@@ -241,14 +224,14 @@ def solve_physics_problem(state):
     steps = state["steps"]
     final_answer = chain_solve_physics_problem.invoke({"problem": problem, "vector_data_base_answer": vector_data_base_answer, "steps_to_solve": steps})
     print(final_answer)
-    return {"final_answer": final_answer["explanation"]}
+    return {"final_answer": final_answer}
 
 
 
 
 def translate(state):
     """
-    Translate the answer from english to spanish
+    Transform the answer to make it easier to understand.
 
     Args:
     state(dict): current state of the graph
@@ -338,4 +321,4 @@ def run_workflow_filter(inputs):
     return value["translate"]
 
 
-run_workflow_filter({"problem": "A car travels 30 km at a speed of 60 km/h and then 30 km at a speed of 20 km/h. What is the average speed of the car during this journey?"})
+#run_workflow_filter({"problem": "Un automóvil recorre 30 km a una velocidad de 60 km/h y luego 30 km a una velocidad de 20 km/h. ¿Cuál es la velocidad promedio del automóvil durante este viaje?"})

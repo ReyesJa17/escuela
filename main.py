@@ -192,4 +192,4 @@ def get_response (question):
     else:
         return event.get("messages")[-1].content
 
-#res = get_response("A car travels 30 km at a speed of 60 km/h and then 30 km at a speed of 20 km/h. What is the average speed of the car during this journey?")
+#res = get_response("Un automóvil recorre 30 km a una velocidad de 60 km/h y luego 30 km a una velocidad de 20 km/h. ¿Cuál es la velocidad promedio del automóvil durante este viaje?")
