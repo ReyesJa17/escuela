@@ -81,7 +81,7 @@ def on_chat_submit(chat_input):
 st.title('FEYNMAN GRAPH 1.0')
 
 
-st.header('Primer chatbot especializado en mentorias de fisica para tempranas edades', divider='blue')
+st.header('Primer sistema de IA especializado en mentorias de fisica para tempranas edades', divider='blue')
 
 
 

@@ -50,7 +50,6 @@ primary_assistant_prompt = ChatPromptTemplate.from_messages(
             "Use the provided tools to best answer the user's questions. "
             "Always use the tools to answer physics related questions. "
             "ALways use the tools answer without any modifications. "
-            "If the user petitions for a different subject, let them know you can only help with physics. "
             "Answer in spanish."
             "\n\nCurrent user:\n<User>\n{user_info}\n</User>"
             "\nCurrent time: {time}.",
