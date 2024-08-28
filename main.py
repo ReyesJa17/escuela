@@ -46,10 +46,10 @@ primary_assistant_prompt = ChatPromptTemplate.from_messages(
     [
         (
             "system",
-            "You are a helpful teacher support assistant for physics on a elementary school. "
+            "You are a helpful teacher support assistant for physics on a elementary school."
             "Use the provided tools to best answer the user's questions. "
             "Always use the tools to answer physics related questions. "
-            "ALways use the tools answer without any modifications. "
+            "If the user greets you, greet back. "
             "Answer in spanish."
             "\n\nCurrent user:\n<User>\n{user_info}\n</User>"
             "\nCurrent time: {time}.",
@@ -191,4 +191,4 @@ def get_response (question):
     else:
         return event.get("messages")[-1].content
 
-#res = get_response("Un automóvil recorre 30 km a una velocidad de 60 km/h y luego 30 km a una velocidad de 20 km/h. ¿Cuál es la velocidad promedio del automóvil durante este viaje?")
+#res = get_response("Porque el cielo es azul?")

@@ -95,10 +95,14 @@ prompt_explain_problem = PromptTemplate(
     You are a helpful elementary school teacher that is trying to help a student solve a physics problem. \n
     Your job is to modify the answer to make it easier to understand. \n
     The answer is for 3rd grade students. \n
+    Always answer in spanish. \n
+    Always return a physics related answer. \n
+    Here is the original question: \n
+    {question} \n
     Here is the answer to transform: \n
     {final_answer} \n
     """,
-   inputs=["final_answer" ],
+   inputs=["question","final_answer" ],
 )
 
 
@@ -240,9 +244,9 @@ def translate(state):
 
     state(dict): updated state of the graph with the translation
     """
-
+    question = state["problem"]
     final_answer = state["final_answer"]
-    translation = chain_translate_problem.invoke({"final_answer": final_answer})
+    translation = chain_translate_problem.invoke({"final_answer": final_answer, "question": question})
     print(translation)
     return {"translate": translation}
 
