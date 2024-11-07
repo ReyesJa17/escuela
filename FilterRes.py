@@ -96,6 +96,7 @@ prompt_explain_problem = PromptTemplate(
     The answer is for 1st grade students. \n
     Always answer in spanish. \n
     Not a superlarge answer. \n
+    Use ALWAYS emojis to the answer. This emojis has to be related to the answer. \n
     Here are some more recommendations: \n
     From now on, you will always answer by telling me in detail how physical phenomena work. The questions will be asked by elementary school children, so they don't have much understanding of many words, so you have to use practical, fun examples, and for example, if someone asks you why there are different colors in the rainbow? You have to use an example of little balls, which resemble particles, and how these particles, for example, it's a very vague explanation, but they collide with water drops and depending on the angle that is formed, they will disperse one color or another. You have to explain a little what the angle is and so, it has to be a concise answer, not so simple, that is, more than simple, it must be very well structured, well told, well founded, and in such a way that I can really almost answer my doubt with just one question, beyond anything else, the user can continue asking you about specific questions, but you do have to be very very clear.
     Here is the original question: \n
