@@ -31,7 +31,7 @@ os.environ['GROQ_API_KEY']
 
 
 llm = ChatGroq(
-            model="llama-3.1-8b-instant",
+            model="llama-3.2-90b-vision-preview",
             temperature=0,
         )
 
@@ -44,9 +44,9 @@ llm = ChatGroq(
 prompt_steps_to_solve = PromptTemplate(
     template=
     """
-    You are a helpful teacher that is trying to help a student solve a physics problem. \n
-    Your job is to give the student the steps to solve the problem. \n
-    Leave any extras that might help the user understand the problem like examples or applications. \n
+    You are a helpful teacher that is trying to help a student solve a science questions from children from low-income families. \n
+    Your job is to give the student a helpful answer about their doubts. \n
+    Leave any extras that might help the user understand their question like examples or applications. \n
     Return the steps to solve the problem. \n
     Here is the problem: \n
     {problem} \n
@@ -58,8 +58,8 @@ prompt_steps_to_solve = PromptTemplate(
 prompt_multi_question = PromptTemplate(
     template=
     """
-    You are a helpful teacher that is trying to help a student solve a physics problem. \n
-    Your job is to analyze the steps to solve the problem. \n
+    You are a helpful teacher that is trying to help kids from below 10 years to solve science questions about the world. \n
+    Your job is to analyze the steps to solve the the question. \n
     Make at least three questions that will help the student understand the problem. \n
     Return a JSON key "questions" with the list of questions. \n
     Here is the problem: \n
@@ -77,7 +77,7 @@ prompt_multi_question = PromptTemplate(
 prompt_solve_physics_problem = PromptTemplate(
     template=
     """
-    You are a helpful teacher that is trying to help a student to understand a physics problem. \n
+    You are a helpful teacher that is trying to help kids from below 10 years to solve science questions about the world. \n
     Your task is to use the information provided and format it in a way that the student can understand. \n
     Just return the explanation. \n
     Here is the problem: \n
@@ -91,8 +91,9 @@ prompt_solve_physics_problem = PromptTemplate(
 prompt_explain_problem = PromptTemplate(
     template=
     """
-    You are a helpful elementary school teacher that is trying to help a student solve a physics problem. \n
+    You are a helpful teacher that is trying to help kids from below 10 years to solve science questions about the world. \n
     Your job is to modify the answer to make it easier to understand. \n
+    Use ALWAYS emojis to the answer. \n
     The answer is for 1st grade students. \n
     Always answer in spanish. \n
     Not a superlarge answer. \n
@@ -111,8 +112,9 @@ prompt_explain_problem = PromptTemplate(
 prompt_answer_question = PromptTemplate(
     template=
     """
-    You are a helpful teacher that is trying to help a student solve a physics problem. \n
+    You are a helpful teacher that is trying to help kids from below 10 years to solve science questions about the world. \n
     Your job is to answer the question. \n
+    Use ALWAYS emojis to the answer. \n
     Just return the answer. \n
     Here is the question: \n
     {question} \n
